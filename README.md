@@ -34,66 +34,13 @@ cp .env.example .env
 
 > ⚠️ `CRYPTO_SECRET_KEY`가 ims-nest와 다르면 마이그레이션 해도 서비스에서 복호화 실패. 반드시 동일 값 확인.
 
-## 명령어 요약
-
-| 명령 | pnpm 스크립트 | DB 변경 | 용도 |
-|---|---|---|---|
-| `node migrate.js list` | `pnpm run list` | X (read-only) | 평문 TOTPSECRET 보유 계정 조회 |
-| `node migrate.js migrate --dry-run` | `pnpm run migrate:dry` | X | 암호화 결과 미리보기 |
-| `node migrate.js migrate` | `pnpm run migrate` | O (`yes` 확인) | 전체 평문 계정 일괄 암호화 |
-| `node migrate.js migrate --account-id <id>` | — | O | `ACCOUNTID` 한 건만 암호화 |
-| `node migrate.js migrate --user-id <id>` | — | O | `USERID` 한 건만 암호화 |
-| `node migrate.js encrypt <plain>` | — | X | 평문 → 암호문 변환 테스트 |
-| `node migrate.js decrypt <cipher>` | — | X | 암호문 → 평문 검증 |
-| `node migrate.js` (인자 없음) | — | X | 도움말 출력 |
-
-### 상세
-
-#### 평문 계정 조회 (read-only)
+## 마이그레이션
 
 ```bash
-pnpm run list
-# = node migrate.js list
+pnpm run list          # 대상 확인
+pnpm run migrate:dry   # 미리보기
+pnpm run migrate       # 실제 반영 (yes 입력)
 ```
-
-`TOTPSECRET IS NOT NULL AND TOTPSECRET NOT LIKE '%.%.%'` 조건으로 평문으로 추정되는 계정 목록을 출력.
-
-#### Dry run (변경 없이 결과만 확인)
-
-```bash
-pnpm run migrate:dry
-# = node migrate.js migrate --dry-run
-```
-
-평문 계정을 찾아 암호화 결과를 표로 보여주되 DB는 건드리지 않음. 실제 반영 전에 먼저 돌릴 것.
-
-#### 실제 마이그레이션 (전체)
-
-```bash
-pnpm run migrate
-# = node migrate.js migrate
-```
-
-대상 목록 출력 후 `yes` 확인 입력을 받아야만 UPDATE 실행. `yes` 외의 답은 모두 취소.
-
-#### 특정 계정만 마이그레이션
-
-```bash
-node migrate.js migrate --account-id 1024
-node migrate.js migrate --user-id jongdeug
-node migrate.js migrate --user-id jongdeug --dry-run   # 조합 가능
-```
-
-`--account-id`와 `--user-id`는 함께 사용할 수 없음. 한 건 테스트용으로 권장.
-
-#### 암복호화 단건 테스트 (DB 미접근)
-
-```bash
-node migrate.js encrypt "NUJAGKRCLU6EAE2F"
-node migrate.js decrypt "aBc1.Xy2Z.Qq3..."
-```
-
-`CRYPTO_SECRET_KEY`만 있으면 동작. 키 값 검증/디버깅용.
 
 ## 권장 순서
 
