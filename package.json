@@ -1,0 +1,16 @@
+{
+  "name": "totp-migrate",
+  "version": "1.0.0",
+  "description": "TUSERACCOUNT.TOTPSECRET 평문 → AES-256-GCM 암호화 마이그레이션 (contact-center/ims-nest 공용)",
+  "private": true,
+  "main": "migrate.js",
+  "scripts": {
+    "list": "node migrate.js list",
+    "migrate": "node migrate.js migrate",
+    "migrate:dry": "node migrate.js migrate --dry-run"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mysql2": "^3.11.0"
+  }
+}
