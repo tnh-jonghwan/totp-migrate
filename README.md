@@ -4,15 +4,6 @@
 
 contact-center CN-25 배포 전/후 기존 평문 계정을 정리하는 용도.
 
-## 왜 필요한가
-
-- 기존 contact-center는 `authenticator.generateSecret()` 결과를 **평문**으로 DB에 저장하고 있었다.
-- CN-25 이후 contact-center는 ims-nest와 동일한 AES-256-GCM 암호화 포맷으로 바뀌었다.
-- 배포 후 기존 평문 계정은 `decrypt()`가 실패해 로그인 불가.
-- **암호 기반 키가 같은** ims-nest의 암호화 포맷과 호환되도록 DB를 덮어써야 한다.
-
-사용자의 Authenticator 앱은 **건드릴 필요 없다**. secret 자체는 동일하고 DB 저장 포맷만 바뀌므로 기존 등록 그대로 유지.
-
 ## 설치
 
 ```bash
